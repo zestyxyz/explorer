@@ -5,8 +5,8 @@
   "license": "MIT",
   "scripts": {
     "start": "vite",
-    "build": "vite build --base=/platform-stats/",
-    "predeploy": "rimraf dist && vite build",
+    "build": "vite build",
+    "predeploy": "rimraf dist && vite build --base=/platform-stats/",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
