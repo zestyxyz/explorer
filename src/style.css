@@ -53,6 +53,22 @@ span:hover {
   margin: 0 12%;
 }
 
+@media (max-width: 1024px) {
+  #cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    margin: 0 12%;
+  }
+}
+
+@media (max-width: 768px) {
+  #cards {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    margin: 0 12%;
+  }
+}
+
 #header {
   background-color: #181522;
   margin-top: 0;
