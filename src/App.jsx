@@ -210,31 +210,57 @@ export default () => {
     setData(combinedSpaceData);
   }
 
+  const filterByOther = () => {
+    let combinedSpaceData = [...initialData];
+    combinedSpaceData = combinedSpaceData.filter(space => {
+      return space.data.location.includes('cryptojournal') ||
+             space.data.location.includes('google') ||
+             space.data.location.includes('vrch.at') ||
+             space.data.location.includes('https://zesty.market') ||
+             space.data.location.includes('3den') ||
+             space.data.format.includes('Twitch')
+    });
+    combinedSpaceData.sort((a, b) => b.visits - a.visits);
+
+    setData(combinedSpaceData);
+  }
+
+  const showAll = () => {
+    let combinedSpaceData = [...initialData];
+    combinedSpaceData.sort((a, b) => b.visits - a.visits);
+
+    setData(combinedSpaceData);
+  }
+
   return (
     <>
-      <h1>Zesty Platform Stats</h1>
-      <div>
-        <button onClick={filterByWebXR}>Filter by WebXR spaces</button>
-        <button onClick={filterByDecentraland}>Filter by Decentraland spaces</button>
-        <button onClick={filterByMuse}>Filter by Muse spaces</button>
-      </div>
-      <div>
-        <button onClick={sortByWeekly}>Sort by Weekly Visits</button>
-        <button onClick={sortByMonthly}>Sort by Monthly Visits</button>
-        <button onClick={sortByYearly}>Sort by Yearly Visits</button>
-        <button onClick={sortByLifetime}>Sort by Lifetime Visits</button>
-      </div>
-      {data && data.map(space => (
-        <div class={'card'} style={{display: 'inline-block'}} key={space.id}>
-          <a href={`https://app.zesty.market/space/${space.id}`} target={'_blank'}>
-            <img src={space.data.image} height={250} />
-          </a>
-          <a href={space.data.location} target={'_blank'}>
-            <p>{space.data.name}</p>
-          </a>
-          <p>Visits: {space[timeframe]}</p>
+      <div id="header">
+        <h1>Zesty Platform Stats</h1>
+        <div id="filter">
+          <span onClick={showAll}>Show all spaces</span>
+          <span onClick={filterByWebXR}>Filter by WebXR spaces</span>
+          <span onClick={filterByDecentraland}>Filter by Decentraland spaces</span>
+          <span onClick={filterByMuse}>Filter by Muse spaces</span>
+          <span onClick={filterByOther}>Filter by Other spaces</span>
         </div>
-      ))}
+        <div id="sort">
+          <span onClick={sortByWeekly}>Sort by Weekly Visits</span>
+          <span onClick={sortByMonthly}>Sort by Monthly Visits</span>
+          <span onClick={sortByYearly}>Sort by Yearly Visits</span>
+          <span onClick={sortByLifetime}>Sort by Lifetime Visits</span>
+        </div>
+      </div>
+      <div id="cards">
+        {data && data.map(space => (
+          <div className={'card'} style={{display: 'inline-block'}} key={space.id}>
+            <img src={space.data.image} width={'100%'} />
+            <p><b>{space.data.name}</b></p>
+            <p><a href={space.data.location} target={'_blank'}>Visit</a></p>
+            <p><a href={`https://app.zesty.market/space/${space.id}`} target={'_blank'}>View on marketplace</a></p>
+            <p>Visits: {space[timeframe]}</p>
+          </div>
+        ))}
+      </div>
     </>
   )
 };
