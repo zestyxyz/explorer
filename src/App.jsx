@@ -204,7 +204,7 @@ export default () => {
   const filterByMuse = () => {
     // Filter out invalid spaces from the list
     let combinedSpaceData = [...initialData];
-    combinedSpaceData = combinedSpaceData.filter(space => space.data.location.includes('muse'));
+    combinedSpaceData = combinedSpaceData.filter(space => space.data.location.includes('muse') || space.data.location.includes('chilltube'));
     combinedSpaceData.sort((a, b) => b.visits - a.visits);
 
     setData(combinedSpaceData);
