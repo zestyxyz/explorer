@@ -1,12 +1,12 @@
 {
-  "name": "platform-stats",
+  "name": "zesty-directory",
   "version": "0.1.0",
   "description": "",
   "license": "MIT",
   "scripts": {
     "start": "vite",
     "build": "vite build",
-    "predeploy": "rimraf dist && vite build --base=/platform-stats/",
+    "predeploy": "rimraf dist && vite build --base=/zesty-directory/",
     "deploy": "gh-pages -d dist"
   },
   "dependencies": {
