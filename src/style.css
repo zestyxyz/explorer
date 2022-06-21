@@ -23,6 +23,10 @@ span:hover, #discord:hover {
   background-color: #605986;
 }
 
+#header > h1 {
+  margin-left: 64px;
+}
+
 .card {
   margin: 1em;
   background-color: #343047;
