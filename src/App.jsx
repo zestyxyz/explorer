@@ -259,7 +259,7 @@ export default () => {
             <img src={space.data.image} width={'100%'} />
             <p><b>{space.data.name}</b></p>
             <p><a href={space.data.location} target={'_blank'}>Visit</a></p>
-            <p><a href={`https://app.zesty.market/space/${space.id}`} target={'_blank'}>View on marketplace</a></p>
+            <p><a href={`https://app.zesty.market/space/${space.id}`} target={'_blank'}>View on market</a></p>
             <p>Visits: {space[timeframe]}</p>
           </div>
         ))}
