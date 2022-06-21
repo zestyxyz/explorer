@@ -13,13 +13,13 @@ body {
   margin: -1.4em 0 0 0;
 }
 
-span {
+span, #discord {
   margin: 1em;
   padding: .5em;
   cursor: pointer;
 }
 
-span:hover {
+span:hover, #discord:hover {
   background-color: #605986;
 }
 
@@ -34,7 +34,7 @@ span:hover {
   background-color: #605986;
 }
 
-.card > p > a {
+.card > p > a, #discord {
   color: white;
 }
 
