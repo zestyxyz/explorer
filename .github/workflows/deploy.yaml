@@ -10,5 +10,7 @@ jobs:
         uses: actions/checkout@v2
       - name: Deploy
         run: |
+          git config --global user.email "msub2official@gmail.com"
+          git config --global user.name "msub2"
           npm install
           npm run deploy
