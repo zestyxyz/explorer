@@ -235,7 +235,7 @@ export default () => {
   return (
     <>
       <div id="header">
-        <a id="discord" style={{float: 'right'}} href='https://discord.gg/7AyZ4parA9'>
+        <a id="discord" style={{float: 'right'}} href='https://discord.com/invite/4tcveDjBuD'>
           <img src="discord-white.png" width={'32px'}></img>
         </a>
         <h1>The Zesty Directory</h1>
