@@ -210,6 +210,15 @@ export default () => {
     setData(combinedSpaceData);
   }
 
+  const filterByHyperfy = () => {
+    // Filter out invalid spaces from the list
+    let combinedSpaceData = [...initialData];
+    combinedSpaceData = combinedSpaceData.filter(space => space.data.location.includes('hyperfy'));
+    combinedSpaceData.sort((a, b) => b.visits - a.visits);
+
+    setData(combinedSpaceData);    
+  }
+
   const filterByOther = () => {
     let combinedSpaceData = [...initialData];
     combinedSpaceData = combinedSpaceData.filter(space => {
@@ -238,20 +247,24 @@ export default () => {
         <a id="discord" style={{float: 'right'}} href='https://discord.com/invite/4tcveDjBuD'>
           <img src="discord-white.png" width={'32px'}></img>
         </a>
-        <h1>The Zesty Directory</h1>
+        <h1>Zesty Metaverse Directory</h1>
         <div id="filter">
-          <span onClick={showAll}>Show all spaces</span>
-          <span onClick={filterByWebXR}>Filter by WebXR spaces</span>
-          <span onClick={filterByDecentraland}>Filter by Decentraland spaces</span>
-          <span onClick={filterByMuse}>Filter by Muse spaces</span>
-          <span onClick={filterByOther}>Filter by Other spaces</span>
+          <span onClick={showAll}>Show All Spaces</span>
+          <span onClick={filterByWebXR}>WebXR</span>
+          <span onClick={filterByHyperfy}>Hyperfy</span> 
+          <span onClick={filterByDecentraland}>Decentraland</span>
+          <span onClick={filterByMuse}>Muse</span>
+          <span onClick={filterByOther}>Other</span>
         </div>
         <div id="sort">
           <span onClick={sortByWeekly}>Sort by Weekly Visits</span>
-          <span onClick={sortByMonthly}>Sort by Monthly Visits</span>
-          <span onClick={sortByYearly}>Sort by Yearly Visits</span>
-          <span onClick={sortByLifetime}>Sort by Lifetime Visits</span>
+          <span onClick={sortByMonthly}>Monthly</span>
+          <span onClick={sortByYearly}>Yearly</span>
+          <span onClick={sortByLifetime}>Lifetime</span>
         </div>
+      </div>
+      <div>
+        <span>These are spaces that have integrated the Zesty SDK</span>
       </div>
       <div id="cards">
         {data && data.map(space => (
