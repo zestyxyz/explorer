@@ -209,15 +209,17 @@ export default () => {
 
   const sortByWeeklyC = () => {
     const spaceData = [...data];
-    spaceData.sort((a, b) => b.clicks - a.clicks);
+    spaceData.sort((a, b) => b.clicksWeekly - a.clicksWeekly);
     setData(spaceData);
+    setTimeframe('visitsWeekly');
     setTimeframeClicks('clicksWeekly');
   }
 
   const sortByMonthlyC = () => {
     const spaceData = [...data];
-    spaceData.sort((a, b) => b.clicks - a.clicks);
+    spaceData.sort((a, b) => b.clicksMonthly - a.clicksMonthly);
     setData(spaceData);
+    setTimeframe('visitsMonthly');
     setTimeframeClicks('clicksMonthly');
   }
 
@@ -225,6 +227,7 @@ export default () => {
     const spaceData = [...data];
     spaceData.sort((a, b) => b.clicksYearly - a.clicksYearly);
     setData(spaceData);
+    setTimeframe('visitsYearly');
     setTimeframeClicks('clicksYearly');
   }
 
@@ -232,6 +235,7 @@ export default () => {
     const spaceData = [...data];
     spaceData.sort((a, b) => b.clicks - a.clicks);
     setData(spaceData);
+    setTimeframe('visits');
     setTimeframeClicks('clicks');
   }
 
