@@ -5,6 +5,7 @@ export default () => {
   const [initialData, setInitialData] = useState([]);
   const [data, setData] = useState([]);
   const [timeframe, setTimeframe] = useState('visits');
+  const [timeframeClicks, setTimeframeClicks] = useState('clicks');
   
   const formatIPFS = uri => {
     if (uri.substring(0, 7) === 'ipfs://')
@@ -31,6 +32,10 @@ export default () => {
         spaceId
         analytics {
           visits(first: 1000) {
+            count
+            date
+          }
+          clicks(first:1000){
             count
             date
           }
@@ -75,6 +80,23 @@ export default () => {
 
     // Get separate list of space IDs
     const spaceIds = spaces.map(space => space.spaceId);
+
+    // Accumulate total clicks for each space and then sort ascending
+    spaces.forEach(space => {
+      space.analytics['clicksWeekly'] = space.analytics.clicks.reduce((prev, cur) => {
+        if (Date.now() - Date.parse(cur.date) > 1000 * 60 * 60 * 24 * 7) return prev; // 1 Week
+        return prev + cur.count;
+      }, 0);
+      space.analytics['clicksMonthly'] = space.analytics.clicks.reduce((prev, cur) => {
+        if (Date.now() - Date.parse(cur.date) > 1000 * 60 * 60 * 24 * 30) return prev; // 1 month (30 days)
+        return prev + cur.count;
+      }, 0);
+      space.analytics['clicksYearly'] = space.analytics.clicks.reduce((prev, cur) => {
+        if (Date.now() - Date.parse(cur.date) > 1000 * 60 * 60 * 24 * 365) return prev; // 1 year (365 days)
+        return prev + cur.count;
+      }, 0);
+      space.analytics.clicks = space.analytics.clicks.reduce((prev, cur) => prev + cur.count, 0);
+    });
 
     // Accumulate total visits for each space and then sort ascending
     spaces.forEach(space => {
@@ -121,7 +143,11 @@ export default () => {
         visits: spaces[i].analytics.visits,
         visitsWeekly: spaces[i].analytics.visitsWeekly,
         visitsMonthly: spaces[i].analytics.visitsMonthly,
-        visitsYearly: spaces[i].analytics.visitsYearly
+        visitsYearly: spaces[i].analytics.visitsYearly,
+        clicks: spaces[i].analytics.clicks,
+        clicksWeekly: spaces[i].analytics.clicksWeekly,
+        clicksMonthly: spaces[i].analytics.clicksMonthly,
+        clicksYearly: spaces[i].analytics.clicksYearly
       }
     });
 
@@ -154,6 +180,7 @@ export default () => {
     spaceData.sort((a, b) => b.visitsWeekly - a.visitsWeekly);
     setData(spaceData);
     setTimeframe('visitsWeekly');
+    setTimeframeClicks('clicksWeekly');
   }
 
   const sortByMonthly = () => {
@@ -161,6 +188,7 @@ export default () => {
     spaceData.sort((a, b) => b.visitsMonthly - a.visitsMonthly);
     setData(spaceData);
     setTimeframe('visitsMonthly');
+    setTimeframeClicks('clicksMonthly');
   }
 
   const sortByYearly = () => {
@@ -168,6 +196,7 @@ export default () => {
     spaceData.sort((a, b) => b.visitsYearly - a.visitsYearly);
     setData(spaceData);
     setTimeframe('visitsYearly');
+    setTimeframeClicks('clicksYearly');
   }
 
   const sortByLifetime = () => {
@@ -175,6 +204,35 @@ export default () => {
     spaceData.sort((a, b) => b.visits - a.visits);
     setData(spaceData);
     setTimeframe('visits');
+    setTimeframeClicks('clicks');
+  }
+
+  const sortByWeeklyC = () => {
+    const spaceData = [...data];
+    spaceData.sort((a, b) => b.clicks - a.clicks);
+    setData(spaceData);
+    setTimeframeClicks('clicksWeekly');
+  }
+
+  const sortByMonthlyC = () => {
+    const spaceData = [...data];
+    spaceData.sort((a, b) => b.clicks - a.clicks);
+    setData(spaceData);
+    setTimeframeClicks('clicksMonthly');
+  }
+
+  const sortByYearlyC = () => {
+    const spaceData = [...data];
+    spaceData.sort((a, b) => b.clicksYearly - a.clicksYearly);
+    setData(spaceData);
+    setTimeframeClicks('clicksYearly');
+  }
+
+  const sortByLifetimeC = () => {
+    const spaceData = [...data];
+    spaceData.sort((a, b) => b.clicks - a.clicks);
+    setData(spaceData);
+    setTimeframeClicks('clicks');
   }
 
   const filterByWebXR = () => {
@@ -248,6 +306,7 @@ export default () => {
           <img src="discord-white.png" width={'32px'}></img>
         </a>
         <h1>Zesty Metaverse Directory</h1>
+        <h2>Sort By Metaverse</h2>
         <div id="filter">
           <span onClick={showAll}>Show All Spaces</span>
           <span onClick={filterByWebXR}>WebXR</span>
@@ -256,13 +315,22 @@ export default () => {
           <span onClick={filterByMuse}>Muse</span>
           <span onClick={filterByOther}>Other</span>
         </div>
+        <h2>Sort By Traffic</h2>
         <div id="sort">
-          <span onClick={sortByWeekly}>Sort by Weekly Visits</span>
+          <b>Visits</b>
+          <span onClick={sortByWeekly}>Weekly</span>
           <span onClick={sortByMonthly}>Monthly</span>
           <span onClick={sortByYearly}>Yearly</span>
-          <span onClick={sortByLifetime}>Lifetime</span>
+        </div>
+        <div id="sort">
+          <b>Clicks</b>
+          <span onClick={sortByWeeklyC}>Weekly</span>
+          <span onClick={sortByMonthlyC}>Monthly</span>
+          <span onClick={sortByYearlyC}>Yearly</span>       
         </div>
       </div>
+
+      
       <div>
         <span>These are spaces that have integrated the Zesty SDK</span>
       </div>
@@ -274,6 +342,7 @@ export default () => {
             <p><a href={space.data.location} target={'_blank'}>Visit</a></p>
             <p><a href={`https://app.zesty.market/space/${space.id}`} target={'_blank'}>View on market</a></p>
             <p>Visits: {space[timeframe]}</p>
+            <p>Clicks: {space[timeframeClicks]}</p>
           </div>
         ))}
       </div>
